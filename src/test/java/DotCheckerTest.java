@@ -41,7 +41,21 @@ public class DotCheckerTest {
 
     @Test
     public void random2() throws Exception {
-        boolean inCapsule = new DotChecker(1.74, 12,5.555, 0.12, 20.003, 3, 4.04).isInCapsule();
-        System.out.println(inCapsule);
+        boolean inCapsule = new DotChecker(1.74, 12,5.555, 0.12, 4.22134, 3, 4.04).isInCapsule();
+        assertThat(inCapsule, is(true));
+    }
+
+    @Test
+    public void randomLoop() throws Exception {
+        double x1, y1, x2, y2, x0, y0, d;
+        for (int i = 0; i < 20; i++) {
+            x1 = random(); y1 = random(); x2 = random(); y2 = random(); x0 = random(); y0 = random(); d = random();
+            DotChecker q = new DotChecker(x1, y1, x2, y2, x0, y0, d);
+            System.out.printf("A(%f, %f); B(%f, %f; O(%f, %f); D = %f; %b\n", x1,y1,x2,y2,x0,y0,d,q.isInCapsule());
+        }
+    }
+
+    private double random(){
+        return (Math.random() * 10);
     }
 }
