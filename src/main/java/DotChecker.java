@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 
 /**
  * Created by 4oc3p on 11.11.2017. temp
@@ -45,16 +46,17 @@ public class DotChecker {
         double bCoef = x1 - x2;
         double cCoef = y1 * (x2 - x1) - x1 * (y2 - y1);
 
-        /* Find coordinates of point on segment which belong to perpendicular of (x0, y0) and |AB| */
+        /* Finding coordinates of point on segment which belong to perpendicular of (x0, y0) and |AB| */
         double x0p = (bCoef * (bCoef * x0 - aCoef * y0) - aCoef * cCoef) / (Math.pow(aCoef, 2) + Math.pow(bCoef, 2));
         double y0p = (aCoef * (aCoef * y0 - bCoef * x0) - bCoef * cCoef) / (Math.pow(aCoef, 2) + Math.pow(bCoef, 2));
 
-        /* Find dimensions of segments separated by point (x0p, y0p) */
+        /* Finding dimensions of segments separated by point (x0p, y0p) */
         double PA = dist(x1, y1, x0p, y0p);
         double PB = dist(x0p, y0p, x2, y2);
         double AB = dist(x1, y1, x2, y2);
 
-        if (PA + PB <= AB) {
+        /* Finding from which point calculate distance to verifiable point */
+        if (round(PA + PB) <= round(AB)) {
             return round(dist(x0p, y0p, x0, y0)) <= round(d);
         } else if (PA + PB > AB && PA < PB) {
             return round(dist(x1, y1, x0, y0)) <= round(d);
@@ -64,7 +66,6 @@ public class DotChecker {
     }
 
     /**
-     *
      * @param x1,y1 - first point
      * @param x2,y2 - second point
      * @return double distance of segment |(x1, y1) (x2, y2)|
@@ -74,11 +75,10 @@ public class DotChecker {
     }
 
     /**
-     *
      * @param a - any double
      * @return double, rounded to fifth digit
      */
     private double round(double a) {
-        return Math.rint(a * 100000.0) / 100000.0;
+        return BigDecimal.valueOf(a).setScale(5, BigDecimal.ROUND_HALF_DOWN).doubleValue();
     }
 }
